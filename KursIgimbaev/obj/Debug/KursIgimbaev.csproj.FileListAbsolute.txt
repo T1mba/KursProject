@@ -35,4 +35,3 @@ C:\Users\User\source\repos\KursIgimbaev\KursIgimbaev\obj\Debug\KursIgimbaev.cspr
 C:\Users\User\source\repos\KursIgimbaev\KursIgimbaev\obj\Debug\KursIgimbaev.csproj.CopyComplete
 C:\Users\User\source\repos\KursIgimbaev\KursIgimbaev\obj\Debug\KursIgimbaev.exe
 C:\Users\User\source\repos\KursIgimbaev\KursIgimbaev\obj\Debug\KursIgimbaev.pdb
-C:\Users\User\source\repos\KursIgimbaev\KursIgimbaev\obj\Debug\KursIgimbaev.csproj.AssemblyReference.cache

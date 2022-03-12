@@ -57,7 +57,16 @@ namespace KursIgimbaev
                         break;
                         
                 }
-          
+                switch (SorTyp)
+                {
+                    case 1:
+                        Result = Result.OrderByDescending(p=>p.Category);
+                        break;
+                    case 2:
+                        Result = Result.OrderBy(p => p.Category);
+                        break;
+
+                }
                 // ищем вхождение строки фильтра в названии и описании объекта без учета регистра
                 if (SearchFilter != "")
                     Result = Result.Where(
@@ -119,6 +128,7 @@ namespace KursIgimbaev
         }
         public string[] TypeSort { get; set; } =
         {
+            "Все типы",
             "Хлебобулочные изделия",
                 "Пироженые",
                 "Торты" 
@@ -128,6 +138,20 @@ namespace KursIgimbaev
         {
             SorTyp = ProductTypeFilter.SelectedIndex;
             Invalidate();
+        }
+        private int ProductSelectedCount = 0;
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProductSelectedCount = ListView.SelectedItems.Count;
+            Invalidate("PriceChangeButtonVisible");
+        }
+        public string PriceChangeButtonVisible
+        {
+            get
+            {
+                if (ProductSelectedCount > 0) return "Visible";
+                return "Collapsed";
+            }
         }
     }
 }
