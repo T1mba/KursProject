@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KursIgimbaev"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
    
     <Grid>
         <ListView
@@ -18,7 +18,8 @@
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel 
-                HorizontalAlignment="Center" />
+                HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
            
@@ -34,6 +35,7 @@
                                 <ColumnDefinition Width="64"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
+                                
                             </Grid.ColumnDefinitions>
                             <Image 
                             Width="64"
@@ -43,6 +45,7 @@
                             <StackPanel
                                 Grid.Column="1"
                                 Orientation="Vertical">
+                                
                                 <TextBlock
                                     Text="{Binding FullName}"/>
                                 <TextBlock
@@ -52,7 +55,7 @@
                                 <TextBlock
                                     Text="{Binding Category}"/>
                                 
-
+                                    
                             </StackPanel>
                            
                         </Grid>
@@ -61,5 +64,32 @@
             </ListView.ItemTemplate>
             
         </ListView>
+       
+        <WrapPanel
+            Orientation="Horizontal"
+            ItemHeight="50">
+            <Label 
+                Margin="10,0,0,0"
+    Content="Поиск" 
+    VerticalAlignment="Center"/>
+            <TextBox
+              
+                Width="200"
+                VerticalAlignment="Center"
+               x:Name="SearchFilterTextBox"
+                KeyUp="SearchFilterTextBox_KeyUp_1"/>
+            <Label
+                Content="Тип продукции"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"/>
+            <ComboBox
+                Name="SortTypeComboBox"
+                SelectedIndex="0"
+                VerticalAlignment="Center"
+                MinWidth="200"
+                SelectionChanged="SortTypeComboBox_SelectionChanged"
+                ItemsSource="{Binding SortList}"/>
+
+        </WrapPanel>
     </Grid>
 </Window>
