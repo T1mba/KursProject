@@ -109,6 +109,7 @@
                 VerticalAlignment="Center"
                 x:Name="PriceChangeButton"
                 Visibility= "{Binding PriceChangeButtonVisible}"
+                Click="PriceChangeButton_Click"
                 Content="Изменить стоимость"/>
 
         </WrapPanel>

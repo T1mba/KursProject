@@ -1,5 +1,6 @@
 ﻿using KursIgimbaev.Classes;
 using KursIgimbaev.Models;
+using KursIgimbaev.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -152,6 +153,19 @@ namespace KursIgimbaev
                 if (ProductSelectedCount > 0) return "Visible";
                 return "Collapsed";
             }
+        }
+
+        private void PriceChangeButton_Click(object sender, RoutedEventArgs e)
+        {
+            decimal Sum = 0;
+            List<int> idList = new List<int>();
+            foreach(Product item in ListView.SelectedItems)
+            {
+                Sum += item.Price;
+                idList.Add(item.id);
+            }
+            var NewWindow = new ChangePriceWindow(Sum / ListView.SelectedItems.Count);
+             NewWindow.ShowDialog()
         }
     }
 }
