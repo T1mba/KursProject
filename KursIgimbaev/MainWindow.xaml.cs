@@ -57,6 +57,7 @@ namespace KursIgimbaev
                         break;
                         
                 }
+          
                 // ищем вхождение строки фильтра в названии и описании объекта без учета регистра
                 if (SearchFilter != "")
                     Result = Result.Where(
@@ -114,6 +115,18 @@ namespace KursIgimbaev
         private void SortTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SortType = SortTypeComboBox.SelectedIndex;
+            Invalidate();
+        }
+        public string[] TypeSort { get; set; } =
+        {
+            "Хлебобулочные изделия",
+                "Пироженые",
+                "Торты" 
+        };
+        private int SorTyp = 0;
+        private void ProductTypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SorTyp = ProductTypeFilter.SelectedIndex;
             Invalidate();
         }
     }

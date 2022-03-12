@@ -79,7 +79,7 @@
                x:Name="SearchFilterTextBox"
                 KeyUp="SearchFilterTextBox_KeyUp_1"/>
             <Label
-                Content="Тип продукции"
+                Content="Сортировка"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"/>
             <ComboBox
@@ -89,6 +89,18 @@
                 MinWidth="200"
                 SelectionChanged="SortTypeComboBox_SelectionChanged"
                 ItemsSource="{Binding SortList}"/>
+            <Label
+                Content="Тип продукции"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"/>
+            <ComboBox
+                Width="120"
+                x:Name="ProductTypeFilter"
+                VerticalAlignment="Center"
+                SelectedIndex="0"
+                SelectionChanged="ProductTypeFilter_SelectionChanged"
+                ItemsSource="{Binding TypeSort}"
+                />
 
         </WrapPanel>
     </Grid>
