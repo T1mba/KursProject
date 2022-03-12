@@ -6,7 +6,60 @@
         xmlns:local="clr-namespace:KursIgimbaev"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+   
     <Grid>
-        
+        <ListView
+           
+            ItemsSource="{Binding ProductList}"
+            x:Name="ListView"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+            >
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel 
+                HorizontalAlignment="Center" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+           
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        BorderThickness="1"
+                        BorderBrush="Black">
+                        <Grid
+                            Margin="10"
+                            HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="64"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image 
+                            Width="64"
+                            Height="64"
+                            Source="{Binding
+                                ImageView}"/>
+                            <StackPanel
+                                Grid.Column="1"
+                                Orientation="Vertical">
+                                <TextBlock
+                                    Text="{Binding FullName}"/>
+                                <TextBlock
+                                    Text="{Binding Weight}"/>
+                                <TextBlock
+                                    Text="{Binding Price}"/>
+                                <TextBlock
+                                    Text="{Binding Category}"/>
+                                
+
+                            </StackPanel>
+                           
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+        </ListView>
     </Grid>
 </Window>

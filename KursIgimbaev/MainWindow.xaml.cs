@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KursIgimbaev.Classes;
+using KursIgimbaev.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,14 @@ namespace KursIgimbaev
     /// </summary>
     public partial class MainWindow : Window
     {
+        public IEnumerable<Product> ProductList { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
+
+            Globals.DataProvider = new MySqlDataProvider();
+            ProductList = Globals.DataProvider.GetProduct();
         }
     }
 }
