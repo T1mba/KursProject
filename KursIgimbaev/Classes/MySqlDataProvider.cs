@@ -136,5 +136,59 @@ namespace KursIgimbaev.Classes
                 MessageBox.Show(ex.Message);
             }
         }
+
+        public void SaveProduct(Product ChangeProduct)
+        {
+            Connection.Open();
+            try
+            {
+                if(ChangeProduct.id == 0)
+                {
+                    string Query = @"INSERT INTO Tg_Product
+                       (FullName,
+                        Weight,
+                        Price,
+                        Category,
+                        Image)
+                        VALUES
+                        (@FullName,
+                         @Weight,
+                           @Price,
+                            @Category,
+                            @Image)";
+                    MySqlCommand Command = new MySqlCommand(Query,Connection);
+                    Command.Parameters.AddWithValue(@"FullName", ChangeProduct.FullName);
+                    Command.Parameters.AddWithValue(@"Weight", ChangeProduct.Weight);
+                    Command.Parameters.AddWithValue(@"Price",ChangeProduct.Price);
+                    Command.Parameters.AddWithValue(@"Category", ChangeProduct.Category);
+                    Command.Parameters.AddWithValue(@"Image", ChangeProduct.Image);
+                    Command.ExecuteNonQuery();
+                }
+                else
+                {
+                    string Query = @"UPDATE Tg_Product
+                            SET
+                        FullName = @FullName,
+                        Weight = @Weight,
+                        Price = @Price,
+                        Category = @Category,
+                        Image = @Image,
+           
+                        WHERE id = @id";
+                    MySqlCommand Command = new MySqlCommand(Query, Connection);
+                    Command.Parameters.AddWithValue(@"FullName", ChangeProduct.FullName);
+                    Command.Parameters.AddWithValue(@"Weight", ChangeProduct.Weight);
+                    Command.Parameters.AddWithValue(@"Price", ChangeProduct.Price);
+                    Command.Parameters.AddWithValue(@"Category", ChangeProduct.Category);
+                    Command.Parameters.AddWithValue(@"Image", ChangeProduct.Image);
+                    Command.ExecuteNonQuery();
+                }
+                
+            }
+            finally
+            {
+                Connection.Close();
+            }
+        }
     }
 }

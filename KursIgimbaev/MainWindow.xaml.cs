@@ -129,7 +129,7 @@ namespace KursIgimbaev
         private int ProductSelectedCount = 0;
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ProductSelectedCount = ListView.SelectedItems.Count;
+            ProductSelectedCount = ProductListView.SelectedItems.Count;
             Invalidate("PriceChangeButtonVisible");
         }
         public string PriceChangeButtonVisible
@@ -145,18 +145,28 @@ namespace KursIgimbaev
         {
             decimal Sum = 0;
             List<int> idList = new List<int>();
-            foreach(Product item in ListView.SelectedItems)
+            foreach(Product item in ProductListView.SelectedItems)
             {
                 Sum += item.Price;
                 idList.Add(item.id);
             }
-            var NewWindow = new ChangePriceWindow(Sum / ListView.SelectedItems.Count);
+            var NewWindow = new ChangePriceWindow(Sum / ProductListView.SelectedItems.Count);
             if ((bool)NewWindow.ShowDialog())
             {
                 Globals.DataProvider.SetAveragePrice(idList, NewWindow.Result);
                 ProductList = Globals.DataProvider.GetProduct();
             }
 
+        }
+       
+
+        private void ProductListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var NewEditWindow = new EditWindow(ProductListView.SelectedItem as Product);
+            if ((bool)NewEditWindow.ShowDialog())
+            {
+                ProductList = Globals.DataProvider.GetProduct();
+            }
         }
     }
 }
