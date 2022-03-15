@@ -165,7 +165,12 @@ namespace KursIgimbaev
                 idList.Add(item.id);
             }
             var NewWindow = new ChangePriceWindow(Sum / ListView.SelectedItems.Count);
-             NewWindow.ShowDialog()
+            if ((bool)NewWindow.ShowDialog())
+            {
+                Globals.DataProvider.SetAveragePrice(idList, NewWindow.Result);
+                ProductList = Globals.DataProvider.GetProduct();
+            }
+
         }
     }
 }

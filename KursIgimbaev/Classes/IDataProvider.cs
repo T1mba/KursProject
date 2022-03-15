@@ -11,5 +11,6 @@ namespace KursIgimbaev.Classes
     {
 
         IEnumerable<Product> GetProduct();
+        void SetAveragePrice(List<int> ProductId, decimal NewCost);
     }
 }

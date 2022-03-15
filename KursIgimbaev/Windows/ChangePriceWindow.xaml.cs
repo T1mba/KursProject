@@ -19,9 +19,23 @@ namespace KursIgimbaev.Windows
     /// </summary>
     public partial class ChangePriceWindow : Window
     {
-        public ChangePriceWindow()
+        public ChangePriceWindow(decimal AvgCost)
         {
             InitializeComponent();
+            CostTextBox.Text = AvgCost.ToString();
+        }
+        public decimal Result;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Result = Convert.ToDecimal(CostTextBox.Text);
+                DialogResult = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Стоимость должна быть числом");
+            }
         }
     }
 }

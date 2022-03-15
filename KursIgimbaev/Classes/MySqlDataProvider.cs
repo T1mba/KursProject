@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace KursIgimbaev.Classes
 {
@@ -56,6 +57,37 @@ namespace KursIgimbaev.Classes
 
             }
             return ProductList;
+        }
+
+        public void SetAveragePrice(List<int> ProductId, decimal NewCost)
+        {
+            try
+            {
+                Connection.Open();
+                try
+                {
+                    string Query = @"UPDATE Tg_Product
+                    SET Price = @Price WHERE id=@id";
+                    foreach(int item in ProductId)
+                    {
+                        MySqlCommand Command = new MySqlCommand(Query, Connection);
+                        Command.Parameters.AddWithValue("@Price", NewCost);
+                        Command.Parameters.AddWithValue("@id", item);
+                        Command.ExecuteNonQuery();
+                    }
+                    
+
+
+                }
+                finally
+                {
+                    Connection.Close();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
