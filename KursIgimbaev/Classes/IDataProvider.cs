@@ -9,7 +9,7 @@ namespace KursIgimbaev.Classes
 {
     public interface IDataProvider
     {
-
+        IEnumerable<ProductType> GetProductTypes();
         IEnumerable<Product> GetProduct();
         void SetAveragePrice(List<int> ProductId, decimal NewCost);
     }

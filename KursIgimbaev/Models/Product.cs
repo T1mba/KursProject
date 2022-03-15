@@ -14,6 +14,8 @@ namespace KursIgimbaev.Models
         public decimal Price { get; set; }
         public string Category { get; set; }
         public string Image { get; set; }
+        public ProductType CurrentProductType { get; set; }
+        public string ProductTypeTitle { get; set; }
         public Uri ImageView
         {
             get

@@ -24,16 +24,15 @@ namespace KursIgimbaev
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public List<ProductType> ProductTypeList { get; set; }
         private IEnumerable<Product> _ProductList = null;
         public IEnumerable<Product> ProductList
         {
             get
             {
-               
-                
-
-                
                 var Result = _ProductList;
+                if (ProductTypeFilterid > 0)
+                    Result = Result.Where(p => p.CurrentProductType.ID == ProductTypeFilterid);
                 switch (SortType)
                 {
                     case 1:
@@ -58,16 +57,7 @@ namespace KursIgimbaev
                         break;
                         
                 }
-                switch (SorTyp)
-                {
-                    case 1:
-                        Result = Result.OrderByDescending(p=>p.Category);
-                        break;
-                    case 2:
-                        Result = Result.OrderBy(p => p.Category);
-                        break;
-
-                }
+                
                 // ищем вхождение строки фильтра в названии и описании объекта без учета регистра
                 if (SearchFilter != "")
                     Result = Result.Where(
@@ -94,6 +84,9 @@ namespace KursIgimbaev
 
             Globals.DataProvider = new MySqlDataProvider();
             ProductList = Globals.DataProvider.GetProduct();
+            ProductTypeList = Globals.DataProvider.GetProductTypes().ToList();
+            ProductTypeList.Insert(0, new ProductType { Name = "Все типы" });
+            
         }
 
         
@@ -127,17 +120,10 @@ namespace KursIgimbaev
             SortType = SortTypeComboBox.SelectedIndex;
             Invalidate();
         }
-        public string[] TypeSort { get; set; } =
-        {
-            "Все типы",
-            "Хлебобулочные изделия",
-                "Пироженые",
-                "Торты" 
-        };
-        private int SorTyp = 0;
+        public int ProductTypeFilterid = 0;
         private void ProductTypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SorTyp = ProductTypeFilter.SelectedIndex;
+            ProductTypeFilterid = (ProductTypeFilter.SelectedItem as ProductType).ID;
             Invalidate();
         }
         private int ProductSelectedCount = 0;

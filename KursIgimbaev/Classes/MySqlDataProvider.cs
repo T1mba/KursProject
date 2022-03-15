@@ -27,7 +27,12 @@ namespace KursIgimbaev.Classes
         public IEnumerable<Product> GetProduct()
         {
             List<Product> ProductList = new List<Product>();
-            string Query = "SELECT * FROM Tg_Product";
+            string Query = @"SELECT
+                            p.*,
+                        p.Category AS ProductTypeName
+                        FROM Tg_Product p
+                        LEFT JOIN
+                        Tg_ProductType ON p.Category = p.ID;";
             try
             {
                 Connection.Open();
@@ -44,6 +49,7 @@ namespace KursIgimbaev.Classes
                         NewProduct.Price = Reader.GetDecimal("Price");
                         NewProduct.Category = Reader.GetString("Category");
                         NewProduct.Image = Reader.GetString("Image");
+                        //NewProduct.CurrentProductType = GetProductType(Reader.GetInt32("ProductTypeID"));
                         ProductList.Add(NewProduct);
                     }
                 }
@@ -57,6 +63,47 @@ namespace KursIgimbaev.Classes
 
             }
             return ProductList;
+        }
+        private List<ProductType> ProductTypes = null;
+        private ProductType GetProductType(int Id)
+        {
+
+            return ProductTypes.Find(pt => pt.ID == Id);
+        }
+
+        public IEnumerable<ProductType> GetProductTypes()
+        {
+           if (ProductTypes == null) { 
+                ProductTypes = new List<ProductType>();
+                string Query = "SELECT * FROM Tg_ProductType";
+                try
+                {
+                    Connection.Open();
+                    try
+                    {
+                        MySqlCommand Command = new MySqlCommand(Query, Connection);
+                        MySqlDataReader Reader = Command.ExecuteReader();
+
+                        while (Reader.Read())
+                        {
+                            ProductType NewProductType = new ProductType();
+                            NewProductType.ID = Reader.GetInt32("ID");
+                            NewProductType.Name = Reader.GetString("Name");
+
+                            ProductTypes.Add(NewProductType);
+                        }
+                    }
+                    finally
+                    {
+                        Connection.Close();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            return ProductTypes;
         }
 
         public void SetAveragePrice(List<int> ProductId, decimal NewCost)

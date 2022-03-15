@@ -100,7 +100,7 @@
                 VerticalAlignment="Center"
                 SelectedIndex="0"
                 SelectionChanged="ProductTypeFilter_SelectionChanged"
-                ItemsSource="{Binding TypeSort}"
+                ItemsSource="{Binding ProductTypeList}"
                 />
             <Button
                 Margin="10,0,0,0"
