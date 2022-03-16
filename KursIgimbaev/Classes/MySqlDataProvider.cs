@@ -47,7 +47,7 @@ namespace KursIgimbaev.Classes
                         NewProduct.FullName = Reader.GetString("FullName");
                         NewProduct.Weight = Reader.GetString("Weight");
                         NewProduct.Price = Reader.GetDecimal("Price");
-                        NewProduct.Image = Reader.GetString("Image");
+                        NewProduct.Image = Reader["Image"].ToString();
                         NewProduct.CurrentProductType = GetProductType(Reader.GetInt32("CategoryId"));
                         ProductList.Add(NewProduct);
                     }
@@ -160,6 +160,7 @@ namespace KursIgimbaev.Classes
                     Command.Parameters.AddWithValue("@Price",ChangeProduct.Price);
                     Command.Parameters.AddWithValue("@CategoryId", ChangeProduct.CurrentProductType.ID);
                     Command.Parameters.AddWithValue("@Image", ChangeProduct.Image);
+                  
                     Command.ExecuteNonQuery();
                 }
                 else

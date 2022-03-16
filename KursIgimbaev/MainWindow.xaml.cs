@@ -168,5 +168,14 @@ namespace KursIgimbaev
                 ProductList = Globals.DataProvider.GetProduct();
             }
         }
+
+        private void EditNewProduct_Click(object sender, RoutedEventArgs e)
+        {
+            var NewEditWindow = new EditWindow(new Product());
+            if ((bool)NewEditWindow.ShowDialog())
+            {
+                Globals.DataProvider.GetProduct();
+            }
+        }
     }
 }

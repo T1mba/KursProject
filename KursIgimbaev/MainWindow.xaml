@@ -120,7 +120,14 @@
                 Visibility= "{Binding PriceChangeButtonVisible}"
                 Click="PriceChangeButton_Click"
                 Content="Изменить стоимость"/>
-
+                <Button
+                    Margin="10,0,0,0"
+                    Width="150"
+                    Height="40"
+                    VerticalAlignment="Center"
+                    x:Name="EditNewProduct"
+                    Click="EditNewProduct_Click"
+                    Content="Добавить продукт"/>
         </WrapPanel>
     </Grid>
 </Window>
