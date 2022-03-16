@@ -62,7 +62,7 @@ namespace KursIgimbaev
                 if (SearchFilter != "")
                     Result = Result.Where(
                         p => p.FullName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
-            p.Category.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0
+                        (p.CurrentProductType!=null && p.CurrentProductType.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0)
 
 
                     );

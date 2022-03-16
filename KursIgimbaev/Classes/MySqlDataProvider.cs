@@ -26,13 +26,13 @@ namespace KursIgimbaev.Classes
         }
         public IEnumerable<Product> GetProduct()
         {
+            GetProductTypes();
+
             List<Product> ProductList = new List<Product>();
-            string Query = @"SELECT
-                            p.*,
-                        p.Category AS ProductTypeName
+            string Query = @"SELECT p.*, pt.`Name`
                         FROM Tg_Product p
                         LEFT JOIN
-                        Tg_ProductType ON p.Category = p.ID;";
+                        Tg_ProductType pt ON p.CategoryId = pt.ID;";
             try
             {
                 Connection.Open();
@@ -47,9 +47,8 @@ namespace KursIgimbaev.Classes
                         NewProduct.FullName = Reader.GetString("FullName");
                         NewProduct.Weight = Reader.GetString("Weight");
                         NewProduct.Price = Reader.GetDecimal("Price");
-                        NewProduct.Category = Reader.GetString("Category");
                         NewProduct.Image = Reader.GetString("Image");
-                        //NewProduct.CurrentProductType = GetProductType(Reader.GetInt32("ProductTypeID"));
+                        NewProduct.CurrentProductType = GetProductType(Reader.GetInt32("CategoryId"));
                         ProductList.Add(NewProduct);
                     }
                 }
@@ -67,7 +66,6 @@ namespace KursIgimbaev.Classes
         private List<ProductType> ProductTypes = null;
         private ProductType GetProductType(int Id)
         {
-
             return ProductTypes.Find(pt => pt.ID == Id);
         }
 
@@ -148,39 +146,40 @@ namespace KursIgimbaev.Classes
                        (FullName,
                         Weight,
                         Price,
-                        Category,
+                        CategoryId,
                         Image)
                         VALUES
                         (@FullName,
                          @Weight,
                            @Price,
-                            @Category,
+                            @CategoryId,
                             @Image)";
                     MySqlCommand Command = new MySqlCommand(Query,Connection);
-                    Command.Parameters.AddWithValue(@"FullName", ChangeProduct.FullName);
-                    Command.Parameters.AddWithValue(@"Weight", ChangeProduct.Weight);
-                    Command.Parameters.AddWithValue(@"Price",ChangeProduct.Price);
-                    Command.Parameters.AddWithValue(@"Category", ChangeProduct.Category);
-                    Command.Parameters.AddWithValue(@"Image", ChangeProduct.Image);
+                    Command.Parameters.AddWithValue("@FullName", ChangeProduct.FullName);
+                    Command.Parameters.AddWithValue("@Weight", ChangeProduct.Weight);
+                    Command.Parameters.AddWithValue("@Price",ChangeProduct.Price);
+                    Command.Parameters.AddWithValue("@CategoryId", ChangeProduct.CurrentProductType.ID);
+                    Command.Parameters.AddWithValue("@Image", ChangeProduct.Image);
                     Command.ExecuteNonQuery();
                 }
                 else
                 {
                     string Query = @"UPDATE Tg_Product
                             SET
-                        FullName = @FullName,
-                        Weight = @Weight,
-                        Price = @Price,
-                        Category = @Category,
-                        Image = @Image,
-           
-                        WHERE id = @id";
+                                FullName = @FullName,
+                                Weight = @Weight,
+                                Price = @Price,
+                                CategoryId = @CategoryId,
+                                Image = @Image
+                            WHERE 
+                                id = @id";
                     MySqlCommand Command = new MySqlCommand(Query, Connection);
-                    Command.Parameters.AddWithValue(@"FullName", ChangeProduct.FullName);
-                    Command.Parameters.AddWithValue(@"Weight", ChangeProduct.Weight);
-                    Command.Parameters.AddWithValue(@"Price", ChangeProduct.Price);
-                    Command.Parameters.AddWithValue(@"Category", ChangeProduct.Category);
-                    Command.Parameters.AddWithValue(@"Image", ChangeProduct.Image);
+                    Command.Parameters.AddWithValue("@FullName", ChangeProduct.FullName);
+                    Command.Parameters.AddWithValue("@Weight", ChangeProduct.Weight);
+                    Command.Parameters.AddWithValue("@Price", ChangeProduct.Price);
+                    Command.Parameters.AddWithValue("@CategoryId", ChangeProduct.CurrentProductType.ID);
+                    Command.Parameters.AddWithValue("@Image", ChangeProduct.Image);
+                    Command.Parameters.AddWithValue("@id", ChangeProduct.id);
                     Command.ExecuteNonQuery();
                 }
                 

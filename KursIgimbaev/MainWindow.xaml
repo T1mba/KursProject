@@ -63,7 +63,7 @@
                                 <TextBlock
                                     Text="{Binding Price}"/>
                                 <TextBlock
-                                    Text="{Binding Category}"/>
+                                    Text="{Binding CurrentProductType.Name}"/>
                                 
                                     
                             </StackPanel>
