@@ -137,6 +137,7 @@ namespace KursIgimbaev.Classes
 
         public void SaveProduct(Product ChangeProduct)
         {
+            
             Connection.Open();
             try
             {
@@ -188,6 +189,31 @@ namespace KursIgimbaev.Classes
             finally
             {
                 Connection.Close();
+            }
+        }
+
+        public void DeleteProduct(Product DelProduct)
+        {
+            try
+            {
+
+
+                Connection.Open();
+                try
+                {
+                    string Query = "DELETE FROM Tg_Product WHERE id=$id";
+                    MySqlCommand Command = new MySqlCommand(Query, Connection);
+                  Command.Parameters.AddWithValue("@id", DelProduct.id);
+                    Command.ExecuteNonQuery();
+                }
+                finally
+                {
+                    Connection.Close();
+                }
+            }
+            catch(Exception Ex)
+            {
+                MessageBox.Show(Ex.Message);
             }
         }
     }

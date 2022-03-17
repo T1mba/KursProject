@@ -26,6 +26,7 @@ namespace KursIgimbaev
     {
         public List<ProductType> ProductTypeList { get; set; }
         private IEnumerable<Product> _ProductList = null;
+        public Product DelProduct;
         public IEnumerable<Product> ProductList
         {
             get
@@ -175,6 +176,21 @@ namespace KursIgimbaev
             if ((bool)NewEditWindow.ShowDialog())
             {
                 Globals.DataProvider.GetProduct();
+            }
+        }
+
+        private void DeleteProduct_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                
+              //  var id = (ProductListView.SelectedItem as Product).id;
+                Globals.DataProvider.DeleteProduct(DelProduct);
+                Invalidate();
+            }
+            catch(Exception Ex)
+            {
+                MessageBox.Show(Ex.Message);
             }
         }
     }

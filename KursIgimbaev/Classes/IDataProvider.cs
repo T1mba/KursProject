@@ -9,6 +9,7 @@ namespace KursIgimbaev.Classes
 {
     public interface IDataProvider
     {
+        void DeleteProduct(Product DelProduct);
         void SaveProduct(Product ChangeProduct);
         IEnumerable<ProductType> GetProductTypes();
         IEnumerable<Product> GetProduct();

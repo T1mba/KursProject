@@ -64,9 +64,16 @@
                                     Text="{Binding Price}"/>
                                 <TextBlock
                                     Text="{Binding CurrentProductType.Name}"/>
-                                
-                                    
-                            </StackPanel>
+
+                            <Button
+                   x:Name="DeleteProduct"
+                   Content="Удалить продукт"
+                                    Tag="{Binding id}"
+                                    Width="50"
+                                    Height="50"
+                 HorizontalAlignment="Left"
+                   Click="DeleteProduct_Click"/>
+                        </StackPanel>
                            
                         </Grid>
                   
