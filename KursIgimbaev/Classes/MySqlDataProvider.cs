@@ -16,7 +16,7 @@ namespace KursIgimbaev.Classes
         {
             try
             {
-                Connection = new MySqlConnection("Server=kolei.ru;Database=tigimbaev;port=3306;UserId=tigimbaev;password=020703;");
+                Connection = new MySqlConnection("Server=home.  kolei.ru;Database=tigimbaev;port=3306;UserId=tigimbaev;password=020703;");
                 
             }
             catch (Exception)

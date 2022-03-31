@@ -57,12 +57,16 @@
                                 Orientation="Vertical">
                                 
                                 <TextBlock
+                                    x:Name="NameProduct"
                                     Text="{Binding FullName}"/>
                                 <TextBlock
+                                    x:Name="Weight"
                                     Text="{Binding Weight}"/>
                                 <TextBlock
+                                    x:Name="Price"
                                     Text="{Binding Price}"/>
                                 <TextBlock
+                                    x:Name="CurrentProductType"
                                     Text="{Binding CurrentProductType.Name}"/>
 
                             <Button
@@ -84,8 +88,10 @@
        
         <WrapPanel
             Orientation="Horizontal"
+        
             ItemHeight="50">
             <Label 
+                x:Name="SearchLabel"
                 Margin="10,0,0,0"
     Content="Поиск" 
     VerticalAlignment="Center"/>
@@ -97,6 +103,7 @@
                 KeyUp="SearchFilterTextBox_KeyUp_1"/>
             <Label
                 Content="Сортировка"
+                x:Name="SortLabel"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"/>
             <ComboBox
@@ -108,6 +115,7 @@
                 ItemsSource="{Binding SortList}"/>
             <Label
                 Content="Тип продукции"
+                x:Name="TypeProductLabel"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"/>
             <ComboBox

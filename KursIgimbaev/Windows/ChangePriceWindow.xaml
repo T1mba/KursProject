@@ -12,6 +12,7 @@
             <TextBox
                 Name="CostTextBox"/>
             <Button
+                x:Name="Change"
                 Click="Button_Click"
                 Content="Изменить"/>
         </StackPanel>
