@@ -72,7 +72,7 @@
                             <Button
                    x:Name="DeleteProduct"
                    Content="Удалить продукт"
-                                    Tag="{Binding id}"
+                                    Tag="{Binding DelProduct.id}"
                                     Width="50"
                                     Height="50"
                  HorizontalAlignment="Left"

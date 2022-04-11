@@ -16,7 +16,7 @@ namespace KursIgimbaev.Classes
         {
             try
             {
-                Connection = new MySqlConnection("Server=home.  kolei.ru;Database=tigimbaev;port=3306;UserId=tigimbaev;password=020703;");
+                Connection = new MySqlConnection("Server=home.kolei.ru;Database=tigimbaev;port=3306;UserId=tigimbaev;password=020703;");
                 
             }
             catch (Exception)
@@ -48,6 +48,7 @@ namespace KursIgimbaev.Classes
                         NewProduct.Weight = Reader.GetString("Weight");
                         NewProduct.Price = Reader.GetDecimal("Price");
                         NewProduct.Image = Reader["Image"].ToString();
+                        NewProduct.CharCode = Reader["CharCode"].ToString();
                         NewProduct.CurrentProductType = GetProductType(Reader.GetInt32("CategoryId"));
                         ProductList.Add(NewProduct);
                     }
@@ -201,10 +202,15 @@ namespace KursIgimbaev.Classes
                 Connection.Open();
                 try
                 {
-                    string Query = "DELETE FROM Tg_Product WHERE id=$id";
-                    MySqlCommand Command = new MySqlCommand(Query, Connection);
-                  Command.Parameters.AddWithValue("@id", DelProduct.id);
-                    Command.ExecuteNonQuery();
+                   
+                        string Query = "DELETE FROM Tg_Product WHERE id=@id";
+                        MySqlCommand Command = new MySqlCommand(Query, Connection);
+                        Command.Parameters.AddWithValue("@id", DelProduct.id);
+                        Command.ExecuteNonQuery();
+                    
+                 
+              
+                 
                 }
                 finally
                 {
