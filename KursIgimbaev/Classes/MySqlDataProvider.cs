@@ -48,7 +48,7 @@ namespace KursIgimbaev.Classes
                         NewProduct.Weight = Reader.GetString("Weight");
                         NewProduct.Price = Reader.GetDecimal("Price");
                         NewProduct.Image = Reader["Image"].ToString();
-                        NewProduct.CharCode = Reader["CharCode"].ToString();
+                        
                         NewProduct.CurrentProductType = GetProductType(Reader.GetInt32("CategoryId"));
                         ProductList.Add(NewProduct);
                     }
@@ -195,32 +195,40 @@ namespace KursIgimbaev.Classes
 
         public void DeleteProduct(Product DelProduct)
         {
-            try
+            if (DelProduct.id == 0)
+                MessageBox.Show("ID = 0");
+            else
             {
-
-
-                Connection.Open();
                 try
                 {
-                   
+
+
+
+
+                    Connection.Open();
+                    try
+                    {
+
                         string Query = "DELETE FROM Tg_Product WHERE id=@id";
                         MySqlCommand Command = new MySqlCommand(Query, Connection);
                         Command.Parameters.AddWithValue("@id", DelProduct.id);
                         Command.ExecuteNonQuery();
-                    
-                 
-              
-                 
+
+
+
+
+                    }
+                    finally
+                    {
+                        Connection.Close();
+                    }
                 }
-                finally
+                catch (Exception Ex)
                 {
-                    Connection.Close();
+                    MessageBox.Show(Ex.Message);
                 }
             }
-            catch(Exception Ex)
-            {
-                MessageBox.Show(Ex.Message);
-            }
+         
         }
     }
 }

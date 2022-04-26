@@ -72,11 +72,11 @@
                             <Button
                    x:Name="DeleteProduct"
                    Content="Удалить продукт"
-                                    Tag="{Binding DelProduct.id}"
+                                    Tag="{Binding id}"
                                     Width="50"
                                     Height="50"
                  HorizontalAlignment="Left"
-                   Click="DeleteProduct_Click"/>
+                   Click="DeleteProduct_Click_1"/>
                         </StackPanel>
                            
                         </Grid>

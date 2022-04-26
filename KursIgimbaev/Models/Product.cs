@@ -13,8 +13,9 @@ namespace KursIgimbaev.Models
         public string Weight { get; set; }
         public decimal Price { get; set; }
         public string Image { get; set; }
-        public string CharCode { get; set; }
+     
         public ProductType CurrentProductType { get; set; }
+        
         public Uri ImageView
         {
             get
