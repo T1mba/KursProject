@@ -14,7 +14,7 @@ namespace KursIgimbaev.Tests
         {
             Globals.DataProvider = new FakeDataProvider();
         }
-        //Проверяем продукт без названия,должен появиться Exception
+        
         [TestMethod]
         public void Save_SaveProductWithoutTitle_Error()
         {
@@ -51,7 +51,7 @@ namespace KursIgimbaev.Tests
 
             }
         }
-        // 
+    
         [TestMethod]
         public void Save_SaveProductWithoutProductType_Success()
         {
