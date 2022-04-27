@@ -1,0 +1,5 @@
+C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\DataProviderLib.dll
+C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\DataProviderLib.pdb
+C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.csproj.CoreCompileInputs.cache
+C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.dll
+C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.pdb

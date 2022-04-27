@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace KursIgimbaev.Classes
+namespace KursIgimbaev.model
 {
     public class MySqlDataProvider : IDataProvider
     {

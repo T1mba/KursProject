@@ -1,4 +1,5 @@
-﻿using KursIgimbaev.Classes;
+﻿
+using KursIgimbaev.model;
 using KursIgimbaev.Models;
 using KursIgimbaev.Windows;
 using System;

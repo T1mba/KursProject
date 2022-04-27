@@ -1,0 +1,9 @@
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\FakeDataProviderLib.dll
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\FakeDataProviderLib.pdb
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\DataProviderLib.dll
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\DataProviderLib.pdb
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.csproj.AssemblyReference.cache
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.csproj.CoreCompileInputs.cache
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.csproj.CopyComplete
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.dll
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.pdb

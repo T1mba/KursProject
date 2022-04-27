@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:KursIgimbaev"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800">
-   
+    <Window.Resources>
+        <BitmapImage
+            x:Key='defaultImage'
+            UriSource="./Image/picture.png"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -50,8 +54,7 @@
                             <Image 
                             Width="64"
                             Height="64"
-                            Source="{Binding
-                                ImageView}"/>
+                            Source="{Binding ImageView, TargetNullValue={StaticResource defaultImage}}"/>
                             <StackPanel
                                 Grid.Column="1"
                                 Orientation="Vertical">
