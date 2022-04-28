@@ -406,5 +406,370 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 ![](./Photo/Tables.PNG)
 
+# База данных на MySQL
+
+После выполнения скрипта и импорта данных из файлов, таблицы содержали в себе следующие данные: 
+
+**Таблица Product:**
+
+![](./Photo/Product.PNG)
+
+**Структура таблицы продуктов:**
+![](./Photo/StrucP.PNG)
+
+**Таблица Order:**
+
+![](./Photo/Order.PNG)
+
+**Структура таблицы продуктов:**
+![](./Photo/StrucO.PNG)
+
+**Таблица OrderProduct:**
+
+![](./Photo/OrderP.PNG)
+
+**Структура таблицы OrderProduct:**
+![](./Photo/StrucOP.PNG)
+
+
 
 # Проект на C#
+
+Проект на C# выполнен с помощью технологии WPF, приложение для администрирование базы данных
+- **Функциональность приложения**: 
+
+    - добавление
+    - редактирование
+    - удаление
+    - поиск
+    - фильтрация
+    - сортировка
+
+- **Реализация приложения**:
+  - Получение продуктов из базы данных:
+    1. На первом этапе я создал  модель продуктов
+    ```
+    public class Product
+    {
+        public int id { get; set; }
+        public string FullName { get; set; }
+        public string Weight { get; set; }
+        public decimal Price { get; set; }
+        public string Image { get; set; }
+     
+        public ProductType CurrentProductType { get; set; }
+        
+        public Uri ImageView
+        {
+            get
+            {
+                var ImageName = Environment.CurrentDirectory + (Image ?? "");
+                return System.IO.File.Exists(ImageName) ? new Uri(ImageName) : null;
+            }
+            set
+            {
+
+            }
+        }
+      ```
+      2. Далее в интерфейсе IDataProvider создал метод для получения продуктов из базы данных: 
+      ```
+      // Метод получения продуктов
+        IEnumerable<Product> GetProduct();
+      ```
+      3. В классе MySqlDataProvider реализовал метод:
+      ```
+       // Реализация метода получения продукта
+        public IEnumerable<Product> GetProduct()
+        {
+            GetProductTypes();
+
+            List<Product> ProductList = new List<Product>();
+            string Query = @"SELECT p.*, pt.`Name`
+                        FROM Tg_Product p
+                        LEFT JOIN
+                        Tg_ProductType pt ON p.CategoryId = pt.ID;";
+            try
+            {
+                Connection.Open();
+                try
+                {
+                    MySqlCommand Command = new MySqlCommand(Query, Connection);
+                    MySqlDataReader Reader = Command.ExecuteReader();
+                    while (Reader.Read())
+                    {
+                        Product NewProduct = new Product();
+                        NewProduct.id = Reader.GetInt32("id");
+                        NewProduct.FullName = Reader.GetString("FullName");
+                        NewProduct.Weight = Reader.GetString("Weight");
+                        NewProduct.Price = Reader.GetDecimal("Price");
+                        NewProduct.Image = Reader["Image"].ToString();
+                        
+                        NewProduct.CurrentProductType = GetProductType(Reader.GetInt32("CategoryId"));
+                        ProductList.Add(NewProduct);
+                    }
+                }
+                finally
+                {
+                    Connection.Close();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return ProductList;
+        }
+      ```
+     4. Создал класс Globals, чтобы получать методы с интерфейса в любом месте кода: 
+     ```
+     public class Globals
+    {
+        public static IDataProvider DataProvider;
+    }
+    ``` 
+    5. Далее в главном окне получил продукты в созданный лист продуктов, для которого был реализован GET и SET(чтение и запись), но об этом чуть позже
+    ```
+       public IEnumerable<Product> ProductList
+        {
+            // Реализация поиска/фильтрации/сортировки
+            get
+            {
+                var Result = _ProductList;
+                if (ProductTypeFilterid > 0)
+                    Result = Result.Where(p => p.CurrentProductType.ID == ProductTypeFilterid);
+                switch (SortType)
+                {
+                    case 1:
+                        Result = Result.OrderBy(p => p.FullName);
+                        break;
+
+                        case 2:
+                        Result = Result.OrderByDescending(p => p.FullName);
+                        break;
+                        
+                        case 3:
+                        Result = Result.OrderByDescending(p => p.Weight);
+                        break;
+                        case 4:
+                        Result = Result.OrderBy(p => p.Weight);
+                        break;
+                    case 5:
+                        Result = Result.OrderByDescending(p => p.Price);
+                        break;
+                    case 6:
+                        Result = Result.OrderBy(p => p.Price);
+                        break;
+                        
+                }
+                
+                // ищем вхождение строки фильтра в названии и описании объекта без учета регистра
+                if (SearchFilter != "")
+                    Result = Result.Where(
+                        p => p.FullName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (p.CurrentProductType!=null && p.CurrentProductType.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0)
+
+
+                    );
+
+
+                return Result;
+            }
+            set
+            {
+                _ProductList = value;
+                Invalidate();
+            }
+        }
+      ```
+    6. В конструкторе главного окна получил метод получения продуктов:
+    ```
+     public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = this;
+            // Получение данных в главное окно
+            Globals.DataProvider = new MySqlDataProvider();
+            ProductList = Globals.DataProvider.GetProduct();
+            ProductTypeList = Globals.DataProvider.GetProductTypes().ToList();
+            ProductTypeList.Insert(0, new ProductType { Name = "Все типы" });
+            
+        }
+      ```
+      7. Далее написал код для вёрстки главного окна, за основу был взят элемент ListView:
+      ```
+       <Window.Resources>
+        <BitmapImage
+            x:Key='defaultImage'
+            UriSource="./Image/picture.png"/>
+    </Window.Resources>
+    <Grid
+            Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ListView
+            Grid.Row="1"
+         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            HorizontalAlignment="Center"
+            ItemsSource="{Binding ProductList}"
+            x:Name="ProductListView"
+                SelectionChanged="ListView_SelectionChanged"
+                    MouseDoubleClick="ProductListView_MouseDoubleClick"
+            >
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        />
+                </ItemsPanelTemplate>
+
+            </ListView.ItemsPanel>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+
+                    <Grid
+                    
+                            Margin="20"
+                         Width="310"
+                           >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200"></RowDefinition>
+                            <RowDefinition Height="5"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Image 
+                           
+                            Width="140"
+                            Height="140"
+                            HorizontalAlignment="Right"
+                            Source="{Binding ImageView, TargetNullValue={StaticResource defaultImage}}"/>
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="5"
+                                Orientation="Vertical">
+                                
+                                <TextBlock
+                                      Grid.Row="0"
+                                    x:Name="NameProduct"
+                                    FontWeight="Bold"
+                                     TextWrapping="Wrap"
+                                    
+                                    HorizontalAlignment="Left"
+                                    Margin="5 5"
+                                     Width="300"
+                                      FontSize="14"
+                                    VerticalAlignment="Center"
+                                    TextAlignment="Center"
+                                    
+                                    Text="{Binding FullName}"/>
+                                <TextBlock
+                                      Grid.Row="1" 
+                                    FontSize="12"
+                                    HorizontalAlignment="Left"
+                                    x:Name="Weight"
+                                    Text="{Binding Weight}"/>
+                                <TextBlock
+                                     Grid.Row="2"
+                                     FontSize="12"
+                                      HorizontalAlignment="Left"
+                                    x:Name="Price"
+                                    Text="{Binding Price, StringFormat={}{0:N2} РУБ}"/>
+                                <TextBlock
+                                     Grid.Row="3"
+                                   HorizontalAlignment="Left"
+                                    FontSize="14"
+                                     Width="300"
+                                    x:Name="CurrentProductType"
+                                    Text="{Binding CurrentProductType.Name}"/>
+
+                            <Button
+                   x:Name="DeleteProduct"
+                   Content="Удалить"
+                                    Tag="{Binding id}"
+                                    Width="100"
+                                    Height="60"
+                                Margin="0"
+                 HorizontalAlignment="Left"
+                   Click="DeleteProduct_Click_1"/>
+                        </StackPanel>
+                           
+                        </Grid>
+                  
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+        </ListView>
+       
+        <WrapPanel
+            Orientation="Horizontal"
+        
+            ItemHeight="50">
+            <Label 
+                x:Name="SearchLabel"
+                Margin="10,0,0,0"
+    Content="Поиск: " 
+    VerticalAlignment="Center"/>
+            <TextBox
+              
+                Width="200"
+                VerticalAlignment="Center"
+               x:Name="SearchFilterTextBox"
+                KeyUp="SearchFilterTextBox_KeyUp_1"/>
+            <Label
+                Content="Сортировка: "
+                x:Name="SortLabel"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"/>
+            <ComboBox
+                Name="SortTypeComboBox"
+                SelectedIndex="0"
+                VerticalAlignment="Center"
+                MinWidth="200"
+                SelectionChanged="SortTypeComboBox_SelectionChanged"
+                ItemsSource="{Binding SortList}"/>
+            <Label
+                Content="Тип продукции: "
+                x:Name="TypeProductLabel"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"/>
+            <ComboBox
+                Width="100"
+                x:Name="ProductTypeFilter"
+                VerticalAlignment="Center"
+                SelectedIndex="0"
+                SelectionChanged="ProductTypeFilter_SelectionChanged"
+                ItemsSource="{Binding ProductTypeList}"
+                />
+            <Button
+                Margin="10,0,0,0"
+                Width="200"
+                Height="40"
+                VerticalAlignment="Center"
+                x:Name="PriceChangeButton"
+                Visibility= "{Binding PriceChangeButtonVisible}"
+                Click="PriceChangeButton_Click"
+                Content="Изменить стоимость"/>
+                <Button
+                    Margin="10,0,0,0"
+                    Width="200"
+                    Height="40"
+                    VerticalAlignment="Center"
+                    x:Name="EditNewProduct"
+                    Click="EditNewProduct_Click"
+                    Content="Добавить продукт" Cursor="Hand"/>
+        </WrapPanel>
+    </Grid>
+    ```
+8. Результат: 
+![](/Photo/mainWindow.PNG)
+9. Для создания дизайна элементов вёрстки была использована библиотека под названием _MaterialDesign_:
+![](/Photo/appXaml.PNG)
+![](/Photo/Design.PNG)   
+  - Создание поиска,фильтрации и сортировки:
+    1. Для написания
