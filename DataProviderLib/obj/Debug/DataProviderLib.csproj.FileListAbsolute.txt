@@ -3,3 +3,10 @@ C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\DataProviderLib.pdb
 C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.csproj.CoreCompileInputs.cache
 C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.dll
 C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.pdb
+C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.csproj.AssemblyReference.cache
+C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\MaterialDesignColors.dll
+C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Timba\source\repos\KursC\DataProviderLib\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Timba\source\repos\KursC\DataProviderLib\obj\Debug\DataProviderLib.csproj.CopyComplete

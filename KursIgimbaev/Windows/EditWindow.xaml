@@ -14,26 +14,26 @@
         </Grid.ColumnDefinitions>
         <StackPanel Margin="5"
                     Grid.Column="1">
-            <Label Content="Название"
+            <Label Content="Название: "
                    x:Name="TitleLabel"/>
             <TextBox 
                 x:Name="FullNameBox"
                 Text="{Binding CurrentProduct.FullName}"/>
             <Label 
                 x:Name="WeightLabel"
-                Content="Вес"/>
+                Content="Вес: "/>
             <TextBox 
                 x:Name="WeightBox"
                 Text="{Binding CurrentProduct.Weight}"/>
             <Label 
                 x:Name="PriceLabel"
-                Content="Цена"/>
+                Content="Цена: "/>
             <TextBox 
                 x:Name="PriceBox"
                 Text="{Binding CurrentProduct.Price}"/>
             <Label 
                 x:Name="CategoryLabel"
-                Content="Категория товара"/>
+                Content="Категория товара: "/>
             <ComboBox ItemsSource="{Binding ProductTypes}"
                 x:Name="ProductTypeFilter"
                       SelectedItem="{Binding CurrentProduct.CurrentProductType}" 

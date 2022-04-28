@@ -23,13 +23,19 @@ namespace KursIgimbaev
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
+    /// Класс главного окна
+
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public List<ProductType> ProductTypeList { get; set; }
+        // Лист типов продукта
+                public List<ProductType> ProductTypeList { get; set; }
         private IEnumerable<Product> _ProductList = null;
+
         public Product DelProduct = new Product();
+        // Лист продуктов
         public IEnumerable<Product> ProductList
         {
+            // Реализация поиска/фильтрации/сортировки
             get
             {
                 var Result = _ProductList;
@@ -78,12 +84,12 @@ namespace KursIgimbaev
                 Invalidate();
             }
         }
-
+        // Конструктор главного окна
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
-
+            // Получение данных в главное окно
             Globals.DataProvider = new MySqlDataProvider();
             ProductList = Globals.DataProvider.GetProduct();
             ProductTypeList = Globals.DataProvider.GetProductTypes().ToList();
@@ -94,6 +100,7 @@ namespace KursIgimbaev
         
 
         public event PropertyChangedEventHandler PropertyChanged;
+        // Метод, говорящий о том что лист продуктов изменился
         private void Invalidate(string ComponentName = "ProductList")
         {
             if (PropertyChanged != null)
@@ -101,12 +108,13 @@ namespace KursIgimbaev
         }
         private string SearchFilter = "";
        
-
+        // Реализация TextBox`a для поиска продукта
         private void SearchFilterTextBox_KeyUp_1(object sender, KeyEventArgs e)
         {
             SearchFilter = SearchFilterTextBox.Text;
             Invalidate();
         }
+        // Массив значений, по которым список продуктов будет сортироваться
         public string[] SortList { get; set; } =
         {
             "Без сортировки",
@@ -116,6 +124,7 @@ namespace KursIgimbaev
             "Вес по возростанию",
             "Цена по убыванию",
             "Цена по возрастанию" };
+        // Реализация ComboBox`a для сортировки продуктов
         private int SortType = 0;
         private void SortTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -123,6 +132,7 @@ namespace KursIgimbaev
             Invalidate();
         }
         public int ProductTypeFilterid = 0;
+        // Реализация ComboBox`а для фильтрации продуктов по их типу
         private void ProductTypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ProductTypeFilterid = (ProductTypeFilter.SelectedItem as ProductType).ID;
@@ -134,6 +144,7 @@ namespace KursIgimbaev
             ProductSelectedCount = ProductListView.SelectedItems.Count;
             Invalidate("PriceChangeButtonVisible");
         }
+        // Метод появления кнопки, если выбран продукт
         public string PriceChangeButtonVisible
         {
             get
@@ -142,7 +153,7 @@ namespace KursIgimbaev
                 return "Collapsed";
             }
         }
-
+        // Кнопка изменении цены
         private void PriceChangeButton_Click(object sender, RoutedEventArgs e)
         {
             decimal Sum = 0;
@@ -161,7 +172,7 @@ namespace KursIgimbaev
 
         }
        
-
+        // Метод двойного нажатия по продукту
         private void ProductListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var NewEditWindow = new EditWindow(ProductListView.SelectedItem as Product);
@@ -170,7 +181,7 @@ namespace KursIgimbaev
                 ProductList = Globals.DataProvider.GetProduct();
             }
         }
-
+        // Кнопка для создания нового продукта
         private void EditNewProduct_Click(object sender, RoutedEventArgs e)
         {
             var NewEditWindow = new EditWindow(new Product());
@@ -184,7 +195,7 @@ namespace KursIgimbaev
         {
            
         }
-
+        // Кнопка удаления продукта
         private void DeleteProduct_Click_1(object sender, RoutedEventArgs e)
         {
             var id = Convert.ToInt32((sender as Button).Tag.ToString());

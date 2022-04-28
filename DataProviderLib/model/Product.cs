@@ -30,6 +30,7 @@ namespace KursIgimbaev.Models
 
             }
         }
+        // Метод сохранения продуктов
         public void Save()
         {   
             if(CurrentProductType != null)
@@ -51,6 +52,7 @@ namespace KursIgimbaev.Models
                 Globals.DataProvider.SaveProduct(this);
             }
         }
+        // Метод удаления продуктов
         public void Delete()
         {
             if(id == 0)

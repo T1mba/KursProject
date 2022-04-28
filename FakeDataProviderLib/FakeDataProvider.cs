@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FakeDataProviderLib
 {
+    // Класс с фейковыми данными для тестирования методов
     public class FakeDataProvider : IDataProvider
 
     {

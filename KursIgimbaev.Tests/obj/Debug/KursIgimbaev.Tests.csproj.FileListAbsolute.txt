@@ -46,3 +46,11 @@ C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\obj\Debug\KursIgimbaev.Test
 C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\obj\Debug\KursIgimbaev.Tests.csproj.CopyComplete
 C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\obj\Debug\KursIgimbaev.Tests.dll
 C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\obj\Debug\KursIgimbaev.Tests.pdb
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\KursIgimbaev.Tests.dll.config
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\MaterialDesignColors.dll
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Timba\source\repos\KursC\KursIgimbaev.Tests\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml

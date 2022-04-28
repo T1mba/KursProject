@@ -210,3 +210,9 @@ C:\Users\Timba\source\repos\KursC\KursIgimbaev\obj\Debug\KursIgimbaev.exe
 C:\Users\Timba\source\repos\KursC\KursIgimbaev\obj\Debug\KursIgimbaev.pdb
 C:\Users\Timba\source\repos\KursC\KursIgimbaev\bin\Debug\DataProviderLib.dll
 C:\Users\Timba\source\repos\KursC\KursIgimbaev\bin\Debug\DataProviderLib.pdb
+C:\Users\Timba\source\repos\KursC\KursIgimbaev\bin\Debug\MaterialDesignColors.dll
+C:\Users\Timba\source\repos\KursC\KursIgimbaev\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Timba\source\repos\KursC\KursIgimbaev\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Timba\source\repos\KursC\KursIgimbaev\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Timba\source\repos\KursC\KursIgimbaev\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Timba\source\repos\KursC\KursIgimbaev\obj\Debug\App.baml

@@ -5,7 +5,27 @@
       "ProjectGuid": "f2ec542b-e7c9-4eb0-b9a1-3474d8c8f5fd",
       "DisplayName": "KursIgimbaev",
       "ColorIndex": 0
+    },
+    "fd2d453c-6a46-4b45-b1a7-7a89ff9a7025": {
+      "ProjectGuid": "fd2d453c-6a46-4b45-b1a7-7a89ff9a7025",
+      "DisplayName": "DataProviderLib",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Прочие файлы",
+      "ColorIndex": -1
+    },
+    "7ac09dcb-7f4c-4ba3-b0c0-e481bbf14cdf": {
+      "ProjectGuid": "7ac09dcb-7f4c-4ba3-b0c0-e481bbf14cdf",
+      "DisplayName": "FakeDataProviderLib",
+      "ColorIndex": 2
+    },
+    "57a35ba0-7f50-484a-bb16-62a6a08b9f21": {
+      "ProjectGuid": "57a35ba0-7f50-484a-bb16-62a6a08b9f21",
+      "DisplayName": "KursIgimbaev.Tests",
+      "ColorIndex": 3
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 4
 }

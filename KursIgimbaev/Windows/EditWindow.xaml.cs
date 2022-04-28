@@ -22,9 +22,11 @@ namespace KursIgimbaev.Windows
     /// <summary>
     /// Логика взаимодействия для EditWindow.xaml
     /// </summary>
+    /// Класс окна для создания нового либо изменения существующего продукта
     public partial class EditWindow : Window, INotifyPropertyChanged
     {
         public IEnumerable<ProductType> ProductTypes { get; set; }
+      
         public Product CurrentProduct { get; set; }
         public string WindowName
         {
@@ -33,6 +35,7 @@ namespace KursIgimbaev.Windows
                 return CurrentProduct.id == 0 ? "Новый продукт" : "Редактирование продукта";
             }
         }
+        //Констуктор окна
         public EditWindow(Product EditProduct)
         {
             InitializeComponent();
@@ -52,7 +55,7 @@ namespace KursIgimbaev.Windows
         {
 
         }
-
+        // Кнопка изменения фотографии
         private void ChangePhotoButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog GetImageDialog = new OpenFileDialog();
@@ -64,7 +67,7 @@ namespace KursIgimbaev.Windows
                 Invalidate();
             }
         }
-
+        // Кнопка сохранения 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try

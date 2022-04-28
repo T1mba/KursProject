@@ -7,3 +7,8 @@ C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProvider
 C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.csproj.CopyComplete
 C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.dll
 C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\obj\Debug\FakeDataProviderLib.pdb
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\MaterialDesignColors.dll
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Timba\source\repos\KursC\FakeDataProviderLib\bin\Debug\MaterialDesignThemes.Wpf.xml

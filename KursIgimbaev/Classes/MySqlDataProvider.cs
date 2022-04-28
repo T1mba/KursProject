@@ -9,8 +9,10 @@ using System.Windows;
 
 namespace KursIgimbaev.model
 {
+    // Класс, реализующий интерфейс
     public class MySqlDataProvider : IDataProvider
     {
+        //Создание соединения с базой данных
         private MySqlConnection Connection;
         public MySqlDataProvider()
         {
@@ -24,6 +26,7 @@ namespace KursIgimbaev.model
 
             }
         }
+        // Реализация метода получения продукта
         public IEnumerable<Product> GetProduct()
         {
             GetProductTypes();
@@ -65,11 +68,12 @@ namespace KursIgimbaev.model
             return ProductList;
         }
         private List<ProductType> ProductTypes = null;
+        // Получения типа продукта для каждого продукта по его ID
         private ProductType GetProductType(int Id)
         {
             return ProductTypes.Find(pt => pt.ID == Id);
         }
-
+        // Реализация метода получения типов продукта
         public IEnumerable<ProductType> GetProductTypes()
         {
            if (ProductTypes == null) { 
@@ -104,7 +108,7 @@ namespace KursIgimbaev.model
 
             return ProductTypes;
         }
-
+        // Метод расчёта средней ценеы
         public void SetAveragePrice(List<int> ProductId, decimal NewCost)
         {
             try
@@ -135,7 +139,7 @@ namespace KursIgimbaev.model
                 MessageBox.Show(ex.Message);
             }
         }
-
+        // Метод сохранения продукта, используется в случае добавления нового  и обновления существующего продукта
         public void SaveProduct(Product ChangeProduct)
         {
             
@@ -192,7 +196,7 @@ namespace KursIgimbaev.model
                 Connection.Close();
             }
         }
-
+        // Метод удаления продукта
         public void DeleteProduct(Product DelProduct)
         {
             if (DelProduct.id == 0)
