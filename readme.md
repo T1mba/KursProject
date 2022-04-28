@@ -34,10 +34,12 @@
 * [Описание ER-Диаграммы](#описание-er-диаграммы)
 * [TestCase](#test-cases)
 * [Скрипт Базы данных](#скрипт-базы-данных)
+* [Структрура Базы данных](#база-данных-на-mysql)
 * [Диаграмма взаимодействия](Classes/interactionDiagram.pdf)
 * [Диаграмма состояний](Classes/Automat.pdf)
 * [WireFrame](Classes/WireFrame.pdf)
 * [C# Project](#проект-на-c)
+* [API](#api)
 
 # Описание предметной области
 ![](./Photo/Булочки.jpg)
@@ -772,4 +774,577 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 ![](/Photo/appXaml.PNG)
 ![](/Photo/Design.PNG)   
   - Создание поиска,фильтрации и сортировки:
-    1. Для написания
+    1. Создание элементов вёрстки:
+    <Label 
+                x:Name="SearchLabel"
+                Margin="10,0,0,0"
+    Content="Поиск: " 
+    VerticalAlignment="Center"/>
+            <TextBox
+              
+                Width="200"
+                VerticalAlignment="Center"
+               x:Name="SearchFilterTextBox"
+                KeyUp="SearchFilterTextBox_KeyUp_1"/>
+            <Label
+                Content="Сортировка: "
+                x:Name="SortLabel"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"/>
+            <ComboBox
+                Name="SortTypeComboBox"
+                SelectedIndex="0"
+                VerticalAlignment="Center"
+                MinWidth="200"
+                SelectionChanged="SortTypeComboBox_SelectionChanged"
+                ItemsSource="{Binding SortList}"/>
+            <Label
+                Content="Тип продукции: "
+                x:Name="TypeProductLabel"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"/>
+            <ComboBox
+                Width="100"
+                x:Name="ProductTypeFilter"
+                VerticalAlignment="Center"
+                SelectedIndex="0"
+                SelectionChanged="ProductTypeFilter_SelectionChanged"
+                ItemsSource="{Binding ProductTypeList}"
+                />
+    2. Реализация в коде: 
+    ```
+       // Реализация TextBox`a для поиска продукта
+        private void SearchFilterTextBox_KeyUp_1(object sender, KeyEventArgs e)
+        {
+            SearchFilter = SearchFilterTextBox.Text;
+            Invalidate();
+        }
+        // Массив значений, по которым список продуктов будет сортироваться
+        public string[] SortList { get; set; } =
+        {
+            "Без сортировки",
+            "Название по убыванию",
+            "Название по возрастанию",
+            "Вес по убыванию",
+            "Вес по возростанию",
+            "Цена по убыванию",
+            "Цена по возрастанию" };
+        // Реализация ComboBox`a для сортировки продуктов
+        private int SortType = 0;
+        private void SortTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SortType = SortTypeComboBox.SelectedIndex;
+            Invalidate();
+        }
+        public int ProductTypeFilterid = 0;
+        // Реализация ComboBox`а для фильтрации продуктов по их типу
+        private void ProductTypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProductTypeFilterid = (ProductTypeFilter.SelectedItem as ProductType).ID;
+            Invalidate();
+        }
+      ```
+      3. Реализация геттера для ProductList`a, о котором я уже писал выше:
+      ```
+        get
+            {
+                var Result = _ProductList;
+                if (ProductTypeFilterid > 0)
+                    Result = Result.Where(p => p.CurrentProductType.ID == ProductTypeFilterid);
+                switch (SortType)
+                {
+                    case 1:
+                        Result = Result.OrderBy(p => p.FullName);
+                        break;
+
+                        case 2:
+                        Result = Result.OrderByDescending(p => p.FullName);
+                        break;
+                        
+                        case 3:
+                        Result = Result.OrderByDescending(p => p.Weight);
+                        break;
+                        case 4:
+                        Result = Result.OrderBy(p => p.Weight);
+                        break;
+                    case 5:
+                        Result = Result.OrderByDescending(p => p.Price);
+                        break;
+                    case 6:
+                        Result = Result.OrderBy(p => p.Price);
+                        break;
+                        
+                }
+                
+                // ищем вхождение строки фильтра в названии и описании объекта без учета регистра
+                if (SearchFilter != "")
+                    Result = Result.Where(
+                        p => p.FullName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (p.CurrentProductType!=null && p.CurrentProductType.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0)
+
+
+                    );
+
+
+                return Result;
+            }
+      ```
+    - Добавление продукта:
+    1. Чтобы добавить продукт,нужно реализовать метод сохранения нового продукта, реализовываем всё также в классе,который наследует интерфейс:
+    ```
+     public void SaveProduct(Product ChangeProduct)
+        {
+            
+            Connection.Open();
+            try
+            {
+                if(ChangeProduct.id == 0)
+                {
+                    string Query = @"INSERT INTO Tg_Product
+                       (FullName,
+                        Weight,
+                        Price,
+                        CategoryId,
+                        Image)
+                        VALUES
+                        (@FullName,
+                         @Weight,
+                           @Price,
+                            @CategoryId,
+                            @Image)";
+                    MySqlCommand Command = new MySqlCommand(Query,Connection);
+                    Command.Parameters.AddWithValue("@FullName", ChangeProduct.FullName);
+                    Command.Parameters.AddWithValue("@Weight", ChangeProduct.Weight);
+                    Command.Parameters.AddWithValue("@Price",ChangeProduct.Price);
+                    Command.Parameters.AddWithValue("@CategoryId", ChangeProduct.CurrentProductType.ID);
+                    Command.Parameters.AddWithValue("@Image", ChangeProduct.Image);
+                  
+                    Command.ExecuteNonQuery();
+                }
+                else
+                {
+                    string Query = @"UPDATE Tg_Product
+                            SET
+                                FullName = @FullName,
+                                Weight = @Weight,
+                                Price = @Price,
+                                CategoryId = @CategoryId,
+                                Image = @Image
+                            WHERE 
+                                id = @id";
+                    MySqlCommand Command = new MySqlCommand(Query, Connection);
+                    Command.Parameters.AddWithValue("@FullName", ChangeProduct.FullName);
+                    Command.Parameters.AddWithValue("@Weight", ChangeProduct.Weight);
+                    Command.Parameters.AddWithValue("@Price", ChangeProduct.Price);
+                    Command.Parameters.AddWithValue("@CategoryId", ChangeProduct.CurrentProductType.ID);
+                    Command.Parameters.AddWithValue("@Image", ChangeProduct.Image);
+                    Command.Parameters.AddWithValue("@id", ChangeProduct.id);
+                    Command.ExecuteNonQuery();
+                }
+                
+            }
+            finally
+            {
+                Connection.Close();
+            }
+        }
+    ```
+    2. Создаём окно, в котором будем создавать продукт:
+    ![](/Photo/editWindow.PNG)
+    Переход на это окно будет при нажатии кнопки в главном окне: 
+    ```
+     // Кнопка для создания нового продукта
+        private void EditNewProduct_Click(object sender, RoutedEventArgs e)
+        {
+            var NewEditWindow = new EditWindow(new Product());
+            if ((bool)NewEditWindow.ShowDialog())
+            {
+                ProductList =  Globals.DataProvider.GetProduct();
+            }
+        }
+      ```
+        Реализуем в этом окне кнопку сохранения:
+        ```
+         // Кнопка сохранения 
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+
+                Globals.DataProvider.SaveProduct(CurrentProduct);
+                DialogResult = true;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+        ```
+      - Редактирование продукта
+      1. Для редактирования продукта будем использовать то же самое окно что и для создания, оно будет открываться при двойном нажатии на продукт в главном окне, для этого в  ListView пишем свойство:
+      ```
+          MouseDoubleClick="ProductListView_MouseDoubleClick"
+      ``` 
+      2. Реализуем метод двойно клика по продукту:
+      ```
+       // Метод двойного нажатия по продукту
+        private void ProductListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var NewEditWindow = new EditWindow(ProductListView.SelectedItem as Product);
+            if ((bool)NewEditWindow.ShowDialog())
+            {
+                ProductList = Globals.DataProvider.GetProduct();
+            }
+        }
+      ```
+      - Осталось реализовать кнопку удаления:
+
+        1. Поместим кнопку на каждый продукт в вёрстке( в StackPanel):
+        ```
+          <Button
+                   x:Name="DeleteProduct"
+                   Content="Удалить"
+                                    Tag="{Binding id}"
+                                    Width="100"
+                                    Height="60"
+                                Margin="0"
+                 HorizontalAlignment="Left"
+                   Click="DeleteProduct_Click_1"/>
+                        </StackPanel>
+        ```
+        2. Реализуем метод удаления: 
+        ```
+         // Метод удаления продукта
+        public void DeleteProduct(Product DelProduct)
+        {
+            if (DelProduct.id == 0)
+                MessageBox.Show("ID = 0");
+            else
+            {
+                try
+                {
+
+
+
+
+                    Connection.Open();
+                    try
+                    {
+
+                        string Query = "DELETE FROM Tg_Product WHERE id=@id";
+                        MySqlCommand Command = new MySqlCommand(Query, Connection);
+                        Command.Parameters.AddWithValue("@id", DelProduct.id);
+                        Command.ExecuteNonQuery();
+
+
+
+
+                    }
+                    finally
+                    {
+                        Connection.Close();
+                    }
+                }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show(Ex.Message);
+                }
+            }
+         
+        }
+        ```
+        3. Теперь осталось вызвать этот метод при нажатии на кнопку удаления:
+      ```
+       // Кнопка удаления продукта
+        private void DeleteProduct_Click_1(object sender, RoutedEventArgs e)
+        {
+            var id = Convert.ToInt32((sender as Button).Tag.ToString());
+            foreach (var DelProduct in ProductList)
+            {
+                if (DelProduct.id == id)
+                {
+                    Globals.DataProvider.DeleteProduct(DelProduct);
+                    ProductList = Globals.DataProvider.GetProduct();
+                    break;
+                 
+                }
+            }
+            
+        }
+      ```
+      - Тестирование
+      1. Весь процесс для создания тестирования был написан с помощью [лекции](https://github.com/kolei/PiRIS/blob/master/articles/fake_unit_test.md), я лишь опишу свои тестирующие методы:
+      ```
+      [TestClass]
+    public class UnitTest1
+    {
+        [ClassInitialize]
+        static public void Init(TestContext ts)
+        {
+            Globals.DataProvider = new FakeDataProvider();
+        }
+        
+        [TestMethod]
+        public void Save_SaveProductWithoutTitle_Error()
+        {
+            Product newProduct = new Product()
+            {
+                FullName = ""
+            };
+            try
+            {
+                newProduct.Save();
+                Assert.Fail();
+                
+            }
+            catch
+            {
+
+            }
+        }
+        [TestMethod]
+        public void Save_SaveProductWithoutWeight_Error()
+        {
+            Product newProduct = new Product()
+            {
+                Weight = ""
+            };
+            try
+            {
+                newProduct.Save();
+                Assert.Fail();
+
+            }
+            catch
+            {
+
+            }
+        }
+    
+        [TestMethod]
+        public void Save_SaveProductWithoutProductType_Success()
+        {
+            Product product = new Product()
+            {
+                id = 11
+            };
+            try
+            {
+                product.Save();
+                Assert.Fail();
+            }
+            catch
+            {
+
+            }
+        }
+        [TestMethod]
+        public void Save_WithoutID_Error()
+        {
+            Product newProduct = new Product()
+            {
+                FullName = "qwe"
+            };
+            try
+            {
+                newProduct.Save();
+                Assert.Fail();
+            }
+            catch
+            {
+
+            }
+        }
+        [TestMethod]
+        public void Delete_DeleteProductWithoutID_Error()
+        {
+            Product product = new Product()
+            {
+                id = 0
+            };
+            try
+            {
+                product.Save();
+                Assert.Fail();
+            }
+            catch
+            {
+
+            }
+        }
+
+
+    }
+    ```
+    Результат выполнения методов: 
+    ![](/Photo/tests.PNG)
+    
+    **На этом проект для администрирования базы данных на языке программирования C# был завершён**
+
+# API 
+API было разаработано на языке программирования PHP, методы которые содержит в себе API:
+  **/GetProduct** - Get Запрос  - метод получения продуктов
+
+  **/AddBasket** - Post Запрос - метод отправки данных о заказе
+
+Сама реализация:
+```
+<?php
+class ApiServer 
+{
+  
+    private $response = ['notice'=>[]];
+    private $db = null;
+    public function __construct(){
+        // результат в формате JSON
+        header('Content-Type: application/json; utf-8');
+
+        try {
+            $server = '/tigimbaev/';
+            $path = $_SERVER['REQUEST_URI'];
+            if(substr_compare($path, $server, 0, strlen($server))===0)
+            $path = substr($path, strlen($server)-1);
+            switch($_SERVER['REQUEST_METHOD'])
+            {
+                //case 'DELETE':
+                  //  $this->processDelete($_SERVER['PATH_INFO']);
+                    //break;
+                case 'GET': 
+                    $this->processGet($path);
+                    break;
+                 case 'POST':
+                    $this->processPost($_SERVER['PATH_INFO']);
+                    break;
+            }
+        } catch (\Throwable $th) {
+            $this->response['notice']['answer'] = $th->getMessage();
+        }
+
+        // выводим в stdout JSON-строку
+        echo json_encode($this->response, JSON_UNESCAPED_UNICODE);
+    }
+    private function processGet($path)
+    {
+        switch($path)
+        {
+            case '/OrderProduct':
+                $this->auth('tigimbaev', '020703');
+                $this->response['notice']['data'] = $this->db
+                ->query("SELECT op.*, o.Date, o.PaymentType, p.FullName
+                FROM Tg_OrderProduct op, Tg_Order o, Tg_Product p 
+                WHERE  op.Id = o.ID and
+                 op.ProductId = p.ID") 
+                 ->fetchAll(PDO::FETCH_ASSOC);
+                
+                 break;
+
+                 case '/Product':
+                    $this->auth('tigimbaev', '020703');
+                    $this->response['notice']['data'] = $this->db
+                    ->query("SELECT p.*, pt.`Name`
+                    FROM Tg_Product p
+                    LEFT JOIN
+                    Tg_ProductType pt ON p.CategoryId = pt.ID")
+                    ->fetchAll(PDO::FETCH_ASSOC);
+                    break;
+              
+                                                
+
+        }
+    }
+    private function processPost($path)
+    {
+        switch ($path) {
+            case '/AddBasket':
+                $this->auth("tigimbaev", "020703");
+    
+                
+                // получаем данные
+                $this->addBasket();
+                
+                break;
+    
+            default:
+                header("HTTP/1.1 404 Not Found");
+        }
+    }
+    private  function addBasket()
+    {
+        $rawData = file_get_contents('php://input');
+        $json = json_decode($rawData, true);
+  
+        if ( isset($json['PhoneNumber']) && isset($json['Name']) && isset($json['items'])) {
+
+          
+            $Name = $json['Name'];
+            $PhoneNumber = $json['PhoneNumber'];
+        
+           
+
+            $this->auth('tigimbaev', '020703');
+
+            $this->db->beginTransaction();
+            try {
+                $query = $this->db->prepare("
+                    INSERT INTO Tg_Order (Date,Phone,Name) 
+                    VALUES(now(), :PhoneNumber,:Name)");
+                
+                $query->bindParam(':PhoneNumber', $PhoneNumber);
+           
+                $query->bindParam(':Name', $Name);
+      
+                $query->execute();
+
+                $orderId = $this->db->lastInsertId();
+                
+                foreach ($json['items'] as $item) {
+
+                    $Basket_ID = $item['id'];
+                    $Quantity = $item['quantity'];
+                    $Price = $item['price'];
+       
+                    $query = $this->db->prepare("
+                        INSERT INTO Tg_OrderProduct (OrderId, ProductId, Price,Quantity) 
+                        VALUES(:Basket_ID, :ProductId, :Price, :Quantity)");
+                    $query->bindParam(':Basket_ID', $orderId);
+                    $query->bindParam(':Quantity', $Quantity);
+                    $query->bindParam(':Price', $Price);
+                    $query->bindParam(':ProductId', $Basket_ID);
+                    $query->execute();
+                    
+                
+                }
+                $this->response["success"] = 1;
+                $this->response["message"] = "Продукт успешно создан.";
+
+                $this->db->commit();
+            } catch (\Throwable $th) {
+                $this->db->rollBack();
+                // $this->response["success"] = 0;
+                // $this->response["message"] = $th->getMessage();
+                throw $th;
+            }
+        }
+        else {
+            $this->response["success"] = 0;
+            $this->response["message"] = "fffff";
+        }
+    }
+   
+    private function auth($login,$password)
+    {
+       
+
+        // пытаемся подключиться к MySQL серверу
+        $this->db = new PDO(
+            "mysql:host=home.kolei.ru;port=3306;dbname=tigimbaev;charset=UTF8", 
+           $login,
+           $password);
+    }
+}
+new ApiServer();
+?>
+```
