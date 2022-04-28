@@ -37,7 +37,7 @@
 * [Диаграмма взаимодействия](Classes/interactionDiagram.pdf)
 * [Диаграмма состояний](Classes/Automat.pdf)
 * [WireFrame](Classes/WireFrame.pdf)
-* [C# Project]()
+* [C# Project](#проект-на-c)
 
 # Описание предметной области
 ![](./Photo/Булочки.jpg)
