@@ -11,46 +11,40 @@ import android.widget.EditText
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var resultText: TextView
-
-    private lateinit var inputText: EditText
-    private lateinit var getDataButton: Button
-    private lateinit var saveDataButton:Button
+        private lateinit var resultText:TextView
+        private lateinit var enterText:EditText
+        private lateinit var saveDataButton:Button
+        private lateinit var getDataButton:Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        resultText = findViewById(R.id.Result)
-        inputText = findViewById(R.id.SavedText)
+        resultText = findViewById(R.id.resultText)
+        enterText = findViewById(R.id.savedText)
+        saveDataButton = findViewById(R.id.saveDataButton)
         getDataButton = findViewById(R.id.getDataButton)
-        saveDataButton = findViewById(R.id.SaveButton)
 
     }
 
-    private fun saveData()
-    {
-        val saveText = inputText.text.toString()
-        val sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
+    private fun saveData(){
+        val savedText = enterText.text.toString()
+        val sharPref = getSharedPreferences("Prefs",Context.MODE_PRIVATE)
+        val editor = sharPref.edit()
         editor.apply{
-            putString("String",saveText)
+           putString("String_Key",savedText)
         }.apply()
-            resultText.setText("Save result = true")
-
-
-
+        resultText.text = "Save Result = true"
     }
-    private fun getData()
-    {
-        val sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        val savedString = sharedPref.getString("String",null)
-        resultText.text = savedString
+    private fun getData(){
+        val sharPref = getSharedPreferences("Prefs",Context.MODE_PRIVATE)
+        val sharedString = sharPref.getString("String_Key",null)
+        resultText.text = sharedString
     }
-    fun saveButtonClick(view: View)
-    {
+    fun saveDataButtonClick(view: View) {
         saveData()
     }
-    fun getDataClick(view: View)
-    {
+    fun getDataButtonClick(view: View) {
         getData()
     }
+
+
 }

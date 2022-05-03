@@ -10,35 +10,37 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Result"
+        android:id="@+id/resultText"
+        android:textSize="20dp"
+
         android:layout_marginLeft="30dp"
-        android:textSize="20dp" />
+        android:textColor="@color/black"
+        />
         <Button
             android:layout_width="350dp"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:text="GET USER DATA"
+            android:layout_gravity="center"
+            android:text="Get Data"
             android:id="@+id/getDataButton"
-            android:onClick="getDataClick"
+            android:onClick="getDataButtonClick"
             android:layout_marginTop="30dp"/>
-
     <EditText
         android:layout_width="match_parent"
-        android:inputType="text"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:id="@+id/SavedText"
         android:layout_height="wrap_content"
-        android:hint="Enter text here"
-        android:importantForAutofill="no" />
-        <Button
-            android:layout_width="350dp"
-            android:layout_gravity="center"
-            android:text="Save Data"
-            android:id="@+id/SaveButton"
-            android:onClick="saveButtonClick"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"/>
-
+        android:id="@+id/savedText"
+        android:textSize="20dp"
+        android:hint="Enter text"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/black"
+        />
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Save Data"
+        android:id="@+id/saveDataButton"
+        android:onClick="saveDataButtonClick"
+        android:layout_marginTop="30dp"/>
 
 </LinearLayout>
