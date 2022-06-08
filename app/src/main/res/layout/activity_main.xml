@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello From Use-Case"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:id="@+id/result"
+        android:textSize="16dp"
+
+        />
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="GET DATA"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:onClick="getDataClick"
+        android:id="@+id/getDataButton"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите имя пользователя"
+        android:id="@+id/savedNameText"
+        android:textSize="16dp"
+
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите фамилию пользователя"
+        android:id="@+id/savedLastNameText"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"/>
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="Save Data"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:onClick="saveDataClick"
+        android:id="@+id/SaveDataButton"/>
+
+
+</LinearLayout>
